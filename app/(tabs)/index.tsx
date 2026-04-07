@@ -62,15 +62,11 @@ export default function HomeScreen() {
     const base64Image = result.assets[0].base64;
     setBilde(result.assets[0].uri);
 
-    const apiKey = process.env.EXPO_PUBLIC_ANTHROPIC_API_KEY;
-
     try {
       setLaster(true);
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      await fetch('https://arvid.vercel.app/api/analyze', {
         method: 'POST',
         headers: {
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
           'content-type': 'application/json',
         },
         body: JSON.stringify({
