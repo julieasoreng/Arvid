@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   
     // Hent bildet fra forespørselen
     const { image } = req.body
+    console.log('Mottok forespørsel, image finnes:', !!image)
   
     // Send bildet til Anthropic
     const response = await fetch('https://api.anthropic.com/v1/messages', {
