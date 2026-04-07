@@ -64,7 +64,7 @@ export default function HomeScreen() {
 
     try {
       setLaster(true);
-      await fetch('https://arvid.vercel.app/api/analyze', {
+      const response = await fetch('https://arvid.vercel.app/api/analyze', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -95,6 +95,7 @@ export default function HomeScreen() {
       });
 
       const data = await response.json();
+      console.log('Svar fra Vercel:', JSON.stringify(data));
       const forklaring = data.content?.[0]?.text ?? 'Ingen svar';
       const renJSON = forklaring.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(renJSON);

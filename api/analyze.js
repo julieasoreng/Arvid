@@ -32,7 +32,7 @@ export default async function handler(req, res) {
               },
               {
                 type: 'text',
-                text: 'Dette er et norsk parkeringsskilt. Kan jeg parkere her nå? Svar med ✅ eller ❌ og én kort setning på norsk.'
+                text: `Dette er et norsk parkeringsskilt. Bruk tidspunkt ${new Date().toLocaleString('no-NO')}. Svar kun med rå JSON, ingen markdown. Feltene: kan_parkere_nå (true/false), forklaring (kort setning på norsk).`
               }
             ]
           }
