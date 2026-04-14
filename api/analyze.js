@@ -5,8 +5,10 @@ export default async function handler(req, res) {
     }
   
     // Hent bildet fra forespørselen
-    const { image } = req.body
+    const { image, mimeType } = req.body
+    console.log('mimeType mottatt:', mimeType)
     console.log('Mottok forespørsel, image finnes:', !!image)
+    console.log('Tidspunkt sendt til Arvid:', new Date().toLocaleString('no-NO'))
   
     // Send bildet til Anthropic
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -27,13 +29,19 @@ export default async function handler(req, res) {
                 type: 'image',
                 source: {
                   type: 'base64',
-                  media_type: 'image/jpeg',
+                  media_type: mimeType || 'image/jpeg',
                   data: image
                 }
               },
               {
-                type: 'text',
-                text: `Dette er et norsk parkeringsskilt. Bruk tidspunkt ${new Date().toLocaleString('no-NO')}. Svar kun med rå JSON, ingen markdown. Feltene: kan_parkere_nå (true/false), forklaring (kort setning på norsk).`
+                type: 'text', 
+                text: `Du er Arvid, en gammel gretten norsk mann som kan alt om parkeringsskilt. Se på bildet. 
+
+Hvis det ER et norsk parkeringsskilt: sett kan_parkere_nå til true eller false basert på tidspunkt ${new Date().toLocaleString('no-NO')}. Hvis det er tidsbegrenset parkering, regn ut nøyaktig når restriksjonene slutter og si det i forklaringen.
+
+Hvis det IKKE er et parkeringsskilt: sett kan_parkere_nå til null og skriv en kort, sint og morsom forklaring som en gammel gubbe - for eksempel "Dette er en koffert, din tosk. Ta bilde av skiltet, ikke bagasjen din."
+
+Svar kun med rå JSON: {"kan_parkere_nå": true/false/null, "forklaring": "..."}`
               }
             ]
           }
