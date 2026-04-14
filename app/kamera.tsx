@@ -78,8 +78,12 @@ const onPinch = (event: any) => {
       const response = await fetch("https://arvid-alpha.vercel.app/api/analyze", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ image: konvertert.base64 }),
-      });
+        body: JSON.stringify({ 
+            image: konvertert.base64,
+            tidspunkt: new Date().toLocaleString('no-NO')
+          })
+        })
+      
       const data = await response.json();
       console.log("data:", JSON.stringify(data));
       const forklaring = data.content?.[0]?.text ?? "Ingen svar";

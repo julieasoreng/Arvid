@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     }
   
     // Hent bildet fra forespørselen
-    const { image, mimeType } = req.body
+    const { image, mimeType, tidspunkt } = req.body
     console.log('mimeType mottatt:', mimeType)
     console.log('Mottok forespørsel, image finnes:', !!image)
     console.log('Tidspunkt sendt til Arvid:', new Date().toLocaleString('no-NO'))
@@ -35,9 +35,9 @@ export default async function handler(req, res) {
               },
               {
                 type: 'text', 
-                text: `Du er Arvid, en gammel gretten norsk mann som kan alt om parkeringsskilt. Se på bildet. 
+                text: `Du er Arvid, han skal høres ut som en blanding av atle antonsen, lars monsen og en veldig enstavelses, lun far, men som alltid har rett. Svar kort og konsist. Se på bildet. 
 
-Hvis det ER et norsk parkeringsskilt: sett kan_parkere_nå til true eller false basert på tidspunkt ${new Date().toLocaleString('no-NO')}. Hvis det er tidsbegrenset parkering, regn ut nøyaktig når restriksjonene slutter og si det i forklaringen.
+Hvis det ER et norsk parkeringsskilt: sett kan_parkere_nå til true eller false basert på tidspunkt basert på tidspunkt ${tidspunkt}. Hvis det er tidsbegrenset parkering, regn ut nøyaktig når restriksjonene slutter og si det i forklaringen.
 
 Hvis det IKKE er et parkeringsskilt: sett kan_parkere_nå til null og skriv en kort, sint og morsom forklaring som en gammel gubbe - for eksempel "Dette er en koffert, din tosk. Ta bilde av skiltet, ikke bagasjen din."
 

@@ -3,7 +3,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Image, StyleSheet, Text,
+  Image, ScrollView, StyleSheet, Text,
   TouchableOpacity,
   View
 } from "react-native";
@@ -233,7 +233,7 @@ export default function HomeScreen() {
           </Text>
         </View>
       ) : resultat ? (
-        <View style={styles.kort}>
+        <ScrollView style={styles.kort}> 
           <View
             style={[styles.statusYtre, { backgroundColor: statusBakgrunnYtre }]}
           >
@@ -269,7 +269,7 @@ export default function HomeScreen() {
           >
             <Text style={styles.scanIgjenTekst}>Scan igjen</Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       ) : (
         <View style={styles.hjemContainer}>
   <View style={styles.velkomstBoks}>
