@@ -47,9 +47,16 @@ export default function HomeScreen() {
     setResultat(parsed);
   }, [resultatFraGalleri]);
     
-    const kjørAnalyse = async () => {
-      setBilde(bildeFraKamera as string);
-      setLaster(true);
+  const kjørAnalyse = async () => {
+    setBilde(bildeFraKamera as string);
+    setLaster(true);
+    const now = new Date();
+    const timer = now.getHours();
+    const minutter = now.getMinutes();
+    const tidspunkt = `${timer}:${minutter}`;
+    const dager = ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"];
+    const ukedag = dager[now.getDay()];
+    
       
       try {
         const response = await fetch(
@@ -57,7 +64,7 @@ export default function HomeScreen() {
           {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({ image: analyserer }),
+            body: JSON.stringify({ image: analyserer, tidspunkt: tidspunkt, ukedag: ukedag }),
           }
         );
         const data = await response.json();
@@ -100,6 +107,12 @@ export default function HomeScreen() {
     if (result.canceled || !result.assets[0].base64) return;
 
     const base64Image = result.assets[0].base64;
+    const now = new Date();
+    const timer = now.getHours();
+    const minutter = now.getMinutes();
+    const tidspunkt = `${timer}:${minutter}`;
+    const dager = ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"];
+    const ukedag = dager[now.getDay()];
     setBilde(result.assets[0].uri);
 
     try {
@@ -109,7 +122,7 @@ export default function HomeScreen() {
         {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ image: base64Image }),
+          body: JSON.stringify({ image: base64Image, tidspunkt: tidspunkt, ukedag: ukedag }),
         }
       );
       const data = await response.json();
@@ -144,6 +157,12 @@ export default function HomeScreen() {
     if (result.canceled || !result.assets[0].base64) return;
 
     const base64Image = result.assets[0].base64;
+    const now = new Date();
+    const timer = now.getHours();
+    const minutter = now.getMinutes();
+    const tidspunkt = `${timer}:${minutter}`;
+    const dager = ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"];
+    const ukedag = dager[now.getDay()];
     setLaster(true);
     setBilde(result.assets[0].uri);
 
@@ -154,7 +173,7 @@ export default function HomeScreen() {
         {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ image: base64Image }),
+          body: JSON.stringify({ image: base64Image, tidspunkt: tidspunkt, ukedag: ukedag }),
         }
       );
       const data = await response.json();
