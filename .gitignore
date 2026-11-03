@@ -41,3 +41,8 @@ app-example
 # generated native folders
 /ios
 /android
+
+# lokale miljøvariabler og Vercel
+.env*.local
+.env
+.vercel

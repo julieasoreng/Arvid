@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "parkering",
-    "slug": "parkering",
+    "name": "Arvid",
+    "slug": "arvid",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "parkering",
-    "userInterfaceStyle": "automatic",
+    "scheme": "arvid",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
@@ -23,7 +23,13 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "Arvid",
+      "shortName": "Arvid",
+      "description": "Gretten AI som tolker parkeringsskilt for deg.",
+      "lang": "nb",
+      "themeColor": "#F5F5F0",
+      "backgroundColor": "#F5F5F0"
     },
     "plugins": [
       "expo-router",
