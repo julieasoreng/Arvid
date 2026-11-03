@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
+# Arvid
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Ta bilde av et parkeringsskilt, så forteller Arvid deg om du kan parkere. Han er en gretten gammel mann som synes du burde kunne dette selv, men han har alltid rett.
 
-## Get started
+Arvid er en nettside. Du trenger ikke laste ned noe: åpne siden på mobilen, trykk på knappen, og telefonens kamera åpner seg.
 
-1. Install dependencies
+## Hvordan det henger sammen
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+Nettleser (Expo / React Native Web)
+  │  bildet skaleres ned til 1200 px og gjøres om til JPEG
+  ▼
+/api/analyze  (Vercel-funksjon)
+  │  sjekker størrelse og format, begrenser antall kall per IP,
+  │  legger til norsk dato og klokkeslett
+  ▼
+Claude (Anthropic API)
+  │  svarer via et verktøy med fast format: { kanParkere, forklaring }
+  ▼
+Svaret valideres med zod på serveren og i nettleseren
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- `app/index.tsx`: hele siden, med fire tilstander (start, laster, ferdig, feil)
+- `lib/arvid.ts`: velge bilde, gjøre det klart og sende det til API-et
+- `api/analyze.js`: serverfunksjonen som snakker med Claude. API-nøkkelen ligger bare her
+- `vercel.json`: forteller Vercel at nettsiden bygges med `expo export` og ligger i `dist`
 
-## Learn more
+## Kjøre lokalt
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm install
+npx vercel dev        # nettside og API sammen på http://localhost:3000
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+`vercel dev` krever at prosjektet er koblet til Vercel (`npx vercel link`) og at `ANTHROPIC_API_KEY` finnes der.
 
-## Join the community
+Vil du bare jobbe med utseendet, kan du kjøre `npx expo start --web` og peke på API-et i produksjon med en `.env.local`:
 
-Join our community of developers creating universal apps.
+```
+EXPO_PUBLIC_API_URL=https://arvid-alpha.vercel.app/api/analyze
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Miljøvariabler (Vercel)
+
+| Navn | Påkrevd | Hva |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | ja | Nøkkelen til Anthropic |
+| `ARVID_MODEL` | nei | Overstyrer modellen. Standard er `claude-sonnet-4-6` |
+
+## Kostnad og sikkerhet
+
+API-et tar maks 20 analyser per IP-adresse i timen og avviser bilder over ca. 2 MB. Grensen ligger i minnet til funksjonen, så den er et fartshump og ikke en mur. Sett derfor også en månedlig utgiftsgrense i Anthropic Console.
+
+## Sjekker
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```

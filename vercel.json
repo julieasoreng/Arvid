@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm ci",
+  "buildCommand": "npx expo export --platform web",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/analyze.js": { "maxDuration": 30 }
+  }
+}
